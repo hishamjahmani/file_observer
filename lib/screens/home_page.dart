@@ -323,7 +323,7 @@ class _HomePageState extends State<HomePage> {
           overlayColor: bgColor,
           scanAreaWidth: scanAreaWidth,
           scanAreaHeight: scanAreaWidth,
-          borderColor: Colors.green,
+          borderColor: Colors.blue,
           
 
         )
