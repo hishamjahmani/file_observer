@@ -1,29 +1,41 @@
-import 'package:file_observer/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatelessWidget {
-
-  final AuthService _authUser = AuthService();
-
-  LoadingScreen({super.key});
+  const LoadingScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.brown[50],
+      backgroundColor: const Color.fromARGB(255, 233, 231, 231),
       appBar: AppBar(
-        title: const Text('Brew Crew'),
-        backgroundColor: Colors.brown[400],
+        title: const Text('Welcome'),
+        backgroundColor: const Color.fromARGB(255, 233, 231, 231),
         elevation: 0.0,
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () async {
-                //await _authUser.signOut();
-                },
+      ),
+      body: const SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: 200,
+                child:  Image(image: AssetImage('assets/images/logo.jpg')),
+              ),
+              CircularProgressIndicator(
+                color: Colors.blue,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Loading....',
+                style: TextStyle(fontSize: 20),
               )
-        ],
+            ],
+          ),
+        ),
       ),
     );
-
   }
 }

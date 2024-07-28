@@ -6,6 +6,6 @@ class Authenticate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Register();
+    return const Register();
   }
 }

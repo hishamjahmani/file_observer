@@ -3,26 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:file_observer/services/auth.dart';
 import 'package:file_observer/services/database.dart';
 import 'package:file_observer/shared/constants.dart';
-import 'package:file_observer/shared/sectionGridView.dart';
+import 'package:file_observer/shared/section_grid_view.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
-import 'package:file_observer/tender_list.dart';
+import 'package:file_observer/shared/tender_list.dart';
 
-import 'models/user.dart';
-import 'models/tender.dart';
+import '../models/user.dart';
+import '../models/tender.dart';
 
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_scanner_overlay/qr_scanner_overlay.dart';
 
 //import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -34,7 +35,8 @@ class _HomePageState extends State<HomePage> {
   final dateFormat = DateFormat('dd/MM/yyyy hh:mm:ss a');
 
   bool scan = false;
-  
+  Color bgColor = Colors.white;
+
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   String? cUserUid, cUserName, cUserSection;
   List<Tender?>? cTendersList;
@@ -72,7 +74,7 @@ class _HomePageState extends State<HomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    final runningVersion = '0';
+    const runningVersion = '0';
 
     cUserUid = currentUser.uid;
     cUserSection = currentUserInfo.userSection;
@@ -109,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                     height: scan ? screenHeight / 2 : 0,
                     width: scan ? screenWidth : 0,
                     child: scan
-                        ? _buildQrView(context)
+                        ? _buildQrView(context, screenWidth/1.7)
                         : const SizedBox(
                             height: 0,
                           ),
@@ -305,19 +307,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildQrView(BuildContext context) {
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 250.0
-        : 380.0;
+  Widget _buildQrView(BuildContext context, double scanAreaWidth) {
 
-    return MobileScanner(
-      allowDuplicates: true,
-      onDetect: (barcode, args) {
-        qrCodeResult =  barcode.rawValue ?? '---';
-      },
+    return Stack(
+      children: [
+        MobileScanner(
+          allowDuplicates: true,
+          onDetect: (barcode, args) {
+            setState(() {
+              qrCodeResult = barcode.rawValue ?? '---';
+            });
+          },
+        ),
+        QRScannerOverlay(
+          overlayColor: bgColor,
+          scanAreaWidth: scanAreaWidth,
+          scanAreaHeight: scanAreaWidth,
+          borderColor: Colors.blue,
+
+        )
+      ],
     );
   }
-
-
 }

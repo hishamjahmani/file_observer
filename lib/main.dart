@@ -1,14 +1,14 @@
 import 'package:file_observer/screens/authenticate/initialize.dart';
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MaterialApp(
-    home: MyApp(
-      
+  runApp(const ToastificationWrapper(
+    child: MaterialApp(
+      home: MyApp(),
+      debugShowCheckedModeBanner: false,
     ),
-    debugShowCheckedModeBanner: false,
   ));
 }
 
@@ -17,6 +17,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Initialize();
+    return const Initialize();
   }
 }

@@ -3,13 +3,13 @@ import 'package:file_observer/models/tender.dart';
 import 'package:file_observer/shared/constants.dart';
 
 class SectionTendersDetails extends StatefulWidget {
-  const SectionTendersDetails({Key? key, required this.sectionName, required this.tenders})
-      : super(key: key);
+  const SectionTendersDetails(
+      {super.key, required this.sectionName, required this.tenders});
   final String sectionName;
   final List<Tender> tenders;
 
   @override
-  _SectionTendersDetailsState createState() => _SectionTendersDetailsState();
+  State<SectionTendersDetails> createState() => _SectionTendersDetailsState();
 }
 
 class _SectionTendersDetailsState extends State<SectionTendersDetails> {
@@ -54,26 +54,28 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
                   controller: searchTextEditingController,
                   keyboardType: TextInputType.number,
                   decoration: textInputDecoration.copyWith(
-                      suffixIcon: certainTender!=''? IconButton(
-                          icon: Icon(Icons.clear),
-                          onPressed: () {
-                            setState(() {
-                              searchTextEditingController.clear();
-                              certainTender = '';
-                            });
-                          }):null,
+                      suffixIcon: certainTender != ''
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                setState(() {
+                                  searchTextEditingController.clear();
+                                  certainTender = '';
+                                });
+                              })
+                          : null,
                       fillColor: Colors.blue[100],
-                      hintStyle: TextStyle(color: Colors.red),
+                      hintStyle: const TextStyle(color: Colors.red),
                       hintText: 'Search a tender'),
                   onChanged: (val) {
                     setState(() => certainTender = val);
                   },
                 ),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               DataTable(
                 //columnSpacing: 25,
-                columns: <DataColumn>[
+                columns: const <DataColumn>[
                   DataColumn(
                     label: Flexible(
                       flex: 1,
@@ -103,7 +105,7 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
                   ),
                 ],
                 rows: List<DataRow>.generate(
-                    tenders!.length,
+                    tenders.length,
                     (index) => DataRow(cells: <DataCell>[
                           DataCell(Text('${tenders[index].tenderNumber}')),
                           DataCell(Text('${tenders[index].tenderLocation}')),

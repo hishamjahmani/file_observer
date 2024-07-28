@@ -8,17 +8,17 @@ import 'package:provider/provider.dart';
 class TenderTile extends StatelessWidget {
   final Tender? tender;
 
-  TenderTile({this.tender});
+  const TenderTile({super.key, this.tender});
 
   @override
   Widget build(BuildContext context) {
     UserData cUser = Provider.of<UserData>(context);
-    final dateFormat = new DateFormat('dd/MM/yyyy hh:mm:ss a');
+    final dateFormat = DateFormat('dd/MM/yyyy hh:mm:ss a');
 
     return Padding(
       padding: const EdgeInsets.only(top: 1.0),
       child: Card(
-        margin: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+        margin: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
         child: ListTile(
           leading: CircleAvatar(
             radius: 10.0,
@@ -30,7 +30,7 @@ class TenderTile extends StatelessWidget {
           ),
           title: Text(
             tender!.tenderNumber!,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           subtitle:
               Text('${tender!.tenderName} at    ${tender!.tenderLocation}'),
@@ -42,13 +42,14 @@ class TenderTile extends StatelessWidget {
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.amber[100],
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(25),
                           topRight: Radius.circular(25)),
                     ),
                     height: 300,
-                    padding:
-                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 20.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +61,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 22.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Tender No.:   ${tender!.tenderNumber}',
                           style: TextStyle(
@@ -68,7 +69,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Location:   ${tender!.tenderLocation}',
                           style: TextStyle(
@@ -76,7 +77,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Direction:   ${tender!.tenderDirection}',
                           style: TextStyle(
@@ -84,7 +85,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Action Time:   ${tender!.currentTime}',
                           style: TextStyle(
@@ -92,7 +93,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Tender of:   ${tender!.tenderOwnerName}',
                           style: TextStyle(
@@ -111,7 +112,7 @@ class TenderTile extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(25),
                         topLeft: Radius.circular(25),
@@ -119,8 +120,9 @@ class TenderTile extends StatelessWidget {
                       color: Colors.white70,
                     ),
                     height: 300,
-                    padding:
-                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 20.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +134,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 22.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Tender No.:   ${tender!.tenderNumber}',
                           style: TextStyle(
@@ -140,7 +142,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Location:   ${tender!.tenderLocation}',
                           style: TextStyle(
@@ -148,7 +150,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Direction:   ${tender!.tenderDirection}',
                           style: TextStyle(
@@ -156,7 +158,7 @@ class TenderTile extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                         ),
-                        SizedBox(width: 25, height: 10),
+                        const SizedBox(width: 25, height: 10),
                         Text(
                           'Action Time:   ${tender!.currentTime}',
                           style: TextStyle(
@@ -188,6 +190,7 @@ class TenderTile extends StatelessWidget {
                                 await DatabaseService(
                                         data: tender!.tenderNumber)
                                     .deleteTenderData(tender!.tenderNumber!);
+                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               },
                               child: const Text(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_observer/models/tender.dart';
-import 'package:file_observer/screens/tendersDetails.dart';
+import 'package:file_observer/screens/tenders_details.dart';
 import 'package:provider/provider.dart';
 import "dart:collection";
 
@@ -14,6 +14,7 @@ class SectionsGridView extends StatelessWidget {
     List<Tender> tenders = Provider.of<List<Tender>>(context);
 
     List<String?> sections = [];
+    // ignore: unnecessary_null_comparison
     if (tenders != null) {
       for (var i = 0; i < tenders.length; i++) {
         sections.add(tenders[i].tenderLocation);
@@ -21,6 +22,7 @@ class SectionsGridView extends StatelessWidget {
       sections = LinkedHashSet<String>.from(sections)
           .toList(); //find sections for the entered sections.
     }
+    // ignore: unnecessary_null_comparison
     return sections != null
         ? GridView.builder(
             primary: false,
@@ -38,7 +40,7 @@ class SectionsGridView extends StatelessWidget {
             itemBuilder: (context, index) => GestureDetector(
               onTap: () async{
                 //print(sections[index]);
-                await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SectionTendersDetails(sectionName: sections![index]!,tenders: tenders,)));},
+                await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SectionTendersDetails(sectionName: sections[index]!,tenders: tenders,)));},
               child: Container(
                 //margin: EdgeInsets.all(5),
                 // height: 150,

@@ -11,7 +11,7 @@ class AppUser{
 
 class UserData {
 
-  final  String uid;
+  final String uid;
   final String userName;
   final String userSection;
 

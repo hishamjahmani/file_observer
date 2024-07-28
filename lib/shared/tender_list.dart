@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_observer/models/tender.dart';
-import 'package:file_observer/tender_tile.dart';
+import 'package:file_observer/shared/tender_tile.dart';
 import 'package:provider/provider.dart';
 
 class TenderList extends StatefulWidget {
@@ -9,7 +9,7 @@ class TenderList extends StatefulWidget {
   const TenderList({super.key, this.filter});
 
   @override
-  _TenderListState createState() => _TenderListState();
+  State<TenderList> createState() => _TenderListState();
 }
 
 class _TenderListState extends State<TenderList> {
@@ -24,18 +24,19 @@ class _TenderListState extends State<TenderList> {
     // tenders.forEach((tender) {
     // });
     if (tenders != null) {
-      if(filter != null)
-      filteredList = tenders
+      if(filter != null) {
+        filteredList = tenders
           .where((element) => element.tenderNumber!.contains(filter))
           .toList();
+      }
       return ListView.builder(
         itemCount: filteredList!.length,
         itemBuilder: (context, index) {
           return TenderTile(tender: filteredList![index]);
         },
       );
-    } else
-      return Column(
+    } else {
+      return const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -46,5 +47,6 @@ class _TenderListState extends State<TenderList> {
           ),
         ],
       );
+    }
   }
 }
