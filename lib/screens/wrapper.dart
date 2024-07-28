@@ -14,14 +14,14 @@ class Wrapper extends StatelessWidget {
     //return either Home or Authenticate widget
 
     final currentUser = Provider.of<AppUser?>(context);
-    if (currentUser == null) {
+    if (currentUser == null || currentUser.userName == 'x userName') {
       return const Authenticate();
     } else {
       return MultiProvider(
         providers: [
           //Provider(create:(context) => DatabaseService().tenders),
           StreamProvider<UserData>(
-              create: (_) => DatabaseService(uid: currentUser.uid).userData, initialData: UserData(uid: 'x',userName: 'x', userSection: 'x'),),
+              create: (_) => DatabaseService(uid: currentUser.uid).userData, initialData: UserData(uid: '' ,userName: '', userSection:'' ),),
           StreamProvider<List<Tender>>(
               create: (_) => DatabaseService().tenders, initialData: const [],),
           StreamProvider<String>(

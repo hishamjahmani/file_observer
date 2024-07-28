@@ -1,9 +1,11 @@
 import 'package:file_observer/services/auth.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class LoadingScreen extends StatelessWidget {
 
   final AuthService _authUser = AuthService();
+
+  LoadingScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

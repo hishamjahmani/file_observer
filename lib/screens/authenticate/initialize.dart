@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:file_observer/models/user.dart';
+import 'package:file_observer/screens/authenticate/authenticate.dart';
 import 'package:file_observer/screens/wrapper.dart';
 import 'package:file_observer/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -10,19 +13,22 @@ import 'package:provider/provider.dart';
 class Initialize extends StatelessWidget {
   // Create the initialization Future outside of `build`:
   final Future<FirebaseApp> _initialization =  Firebase.initializeApp();
-  final AppUser  inituser = AppUser(uid:'xxx', userName: 'xxxxx', userSection: 'x');
+  AppUser initUser = AppUser(uid:'x uid', userName: 'x userName', userSection: 'x userSection');
+  bool isRealUser = false;
+
 
   Initialize({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
+     
     return FutureBuilder(
       // Initialize FlutterFire:
       future: _initialization,
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          print('*******************************************');
+          //print('\n\n*******************************************\n\n');
           print(snapshot.error.toString());
           return Container(
               color: Colors.black,
@@ -39,8 +45,13 @@ class Initialize extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return StreamProvider<AppUser?>.value(
-              value: AuthService().user, initialData: inituser, child: const Wrapper());
+          if(snapshot.hasData)
+
+          {
+
+            return StreamProvider<AppUser?>.value(
+              value: AuthService().user, initialData: initUser, child: const Wrapper());
+        }
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

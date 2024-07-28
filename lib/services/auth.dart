@@ -11,8 +11,8 @@ class AuthService {
   
 
   //create user obj based on FirebaseUser
-  AppUser? _userFromFirebaseUser(User? user){
-    return user != null ? AppUser(uid: user.uid) : null;
+  AppUser _userFromFirebaseUser(User? user){
+    return AppUser(uid: user!.uid) ;
     // if(user != null){
     //   for(int i = 0; i< users.length; i++){
     //     if (users[i].uid == user.uid){
@@ -25,7 +25,7 @@ class AuthService {
   }
 
   // auth change user stream
-  Stream<AppUser?> get user{
+  Stream<AppUser> get user{
     return _auth.authStateChanges()
         //.map((User user) => _userFromFirebaseUser(user));
           .map(_userFromFirebaseUser);   // the same as above.
@@ -50,13 +50,8 @@ class AuthService {
       var user = result.user;
       return _userFromFirebaseUser(user);
     }catch(e){
-      error = e.toString();
       print(e.toString());
     }
-  }
-
-  String currentError() {
-    return error;
   }
 
   //register with email & password
