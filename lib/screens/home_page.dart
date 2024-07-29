@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   String? cUserUid, cUserName, cUserSection;
   List<Tender?>? cTendersList;
+  MobileScannerController camController = MobileScannerController();
 
   @override
   void initState() {
@@ -313,13 +314,61 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         MobileScanner(
-          allowDuplicates: true,
-          onDetect: (barcode, args) {
+          allowDuplicates: false,
+          onDetect: (barcode, args) async{
             setState(() {
               qrCodeResult = barcode.rawValue ?? '---';
             });
+
+var result=  barcode;
+ Tender? t;
+      for (var i = 0; i < cTendersList!.length; i++) {
+        if (cTendersList![i]!.tenderNumber == result.rawValue) {
+          t = cTendersList![i]!;
+        }
+      }
+      //print(t);
+      if (t != null) {
+        await DatabaseService(uid: cUserUid, data: result.rawValue)
+            .updateTenderData(
+                result.rawValue,
+                t.tenderName,
+                cUserSection,
+                t.tenderSection,
+                t.tenderOwnerName,
+                tenderDirection,
+                cUserName,
+                dateFormat.format(DateTime.now()),
+                'Processing');
+
+        await DatabaseService(uid: cUserUid, data: result.rawValue).updateLogFile(
+            result.rawValue,
+            t.tenderName,
+            cUserSection,
+            t.tenderSection,
+            t.tenderOwnerName,
+            tenderDirection,
+            cUserName,
+            dateFormat.format(DateTime.now()),
+            'Processing');
+
+        //await FlutterBeep.beep();
+        Future.delayed(const Duration(milliseconds: 800));
+        
+        //controller.resumeCamera();
+        setState(() {
+          qrCodeResult = 'Ready To Scan...';
+        });
+      } else {
+        //FlutterRingtonePlayer.playRingtone();
+        //await FlutterBeep.playSysSound(44);
+        Future.delayed(const Duration(milliseconds: 800));
+        //controller.resumeCamera();
+      }            
           },
         ),
+
+
         QRScannerOverlay(
           overlayColor: bgColor,
           scanAreaWidth: scanAreaWidth,
