@@ -107,7 +107,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  SizedBox(
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
                     height: scan ? screenHeight / 2 : 0,
                     width: scan ? screenWidth : 0,
                     child: scan
