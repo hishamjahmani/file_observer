@@ -43,6 +43,7 @@ dependencies:
   mobile_scanner: ^2.1.0
   toastification: ^2.1.0
   qr_scanner_overlay: ^0.0.2
+  flutter_beep: ^1.0.0
 
 
 

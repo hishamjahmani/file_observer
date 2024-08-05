@@ -4,6 +4,7 @@ import 'package:file_observer/services/auth.dart';
 import 'package:file_observer/services/database.dart';
 import 'package:file_observer/shared/constants.dart';
 import 'package:file_observer/shared/section_grid_view.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:file_observer/shared/tender_list.dart';
@@ -35,12 +36,13 @@ class _HomePageState extends State<HomePage> {
   final dateFormat = DateFormat('dd/MM/yyyy hh:mm:ss a');
 
   bool scan = false;
+  bool getNewScan = true;
   Color bgColor = Colors.white;
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   String? cUserUid, cUserName, cUserSection;
   List<Tender?>? cTendersList;
-  MobileScannerController camController = MobileScannerController();
+  late MobileScannerController camController;
 
   @override
   void initState() {
@@ -113,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                     height: scan ? screenHeight / 2 : 0,
                     width: scan ? screenWidth : 0,
                     child: scan
-                        ? _buildQrView(context, screenWidth / 1.7)
+                        ? _buildQrView(context, screenWidth / 2)
                         : const SizedBox(
                             height: 0,
                           ),
@@ -187,50 +189,86 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold,
                   ))),
       floatingActionButton: (version == runningVersion)
-          ? FloatingActionButton(
-              elevation: 25,
-              onPressed: () async {
-                if (qrCodeResult != "Ready To Scan...") {
-                  await DatabaseService(uid: cUserUid, data: qrCodeResult)
-                      .addNewTenderData(
-                    qrCodeResult,
-                    'refrigerator',
-                    cUserSection!,
-                    cUserSection!,
-                    cUserName!,
-                    tenderDirection!,
-                    cUserName!,
-                    dateFormat.format(DateTime.now()),
-                    'Created',
-                  );
-
-                  await DatabaseService(uid: cUserUid, data: qrCodeResult)
-                      .updateLogFile(
-                    qrCodeResult,
-                    'refrigerator',
-                    cUserSection!,
-                    cUserSection!,
-                    cUserName!,
-                    tenderDirection!,
-                    cUserName!,
-                    dateFormat.format(DateTime.now()),
-                    'Created',
-                  );
-                  setState(() {
-                    qrCodeResult = "Ready To Scan...";
-                    //controller.resumeCamera();
-                  });
-                  //FlutterBeep.beep();
-                }
-              },
-              child: const Center(
-                  child: Text(
-                'create',
-                style: TextStyle(
-                  fontSize: 12,
+          ? Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+FloatingActionButton(
+                  heroTag: "Dismiss",
+                  elevation: 25,
+                  backgroundColor: const Color.fromARGB(255, 219, 109, 101),
+                  onPressed: ()  {
+                    if (qrCodeResult != "Ready To Scan...") {
+                      
+                      setState(() {
+                        qrCodeResult = "Ready To Scan...";
+                        getNewScan = true;
+                        //controller.resumeCamera();
+                      });
+                      FlutterBeep.beep();
+                    }
+                  },
+                  child: const Center(
+                      child: Text(
+                    'Dismiss',
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  )),
                 ),
-              )),
-            )
+
+                const SizedBox(height: 20,),
+
+
+
+              FloatingActionButton(
+                heroTag: "Create",
+                  elevation: 25,
+                  onPressed: () async {
+                    if (qrCodeResult != "Ready To Scan...") {
+                      await DatabaseService(uid: cUserUid, data: qrCodeResult)
+                          .addNewTenderData(
+                        qrCodeResult,
+                        'refrigerator',
+                        cUserSection!,
+                        cUserSection!,
+                        cUserName!,
+                        tenderDirection!,
+                        cUserName!,
+                        dateFormat.format(DateTime.now()),
+                        'Created',
+                      );
+              
+                      await DatabaseService(uid: cUserUid, data: qrCodeResult)
+                          .updateLogFile(
+                        qrCodeResult,
+                        'refrigerator',
+                        cUserSection!,
+                        cUserSection!,
+                        cUserName!,
+                        tenderDirection!,
+                        cUserName!,
+                        dateFormat.format(DateTime.now()),
+                        'Created',
+                      );
+                      setState(() {
+                        qrCodeResult = "Ready To Scan...";
+                        getNewScan = true;
+                        //controller.resumeCamera();
+                      });
+                      FlutterBeep.beep();
+                    }
+                  },
+                  child: const Center(
+                      child: Text(
+                    'Create',
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  )),
+                ),
+            ],
+          )
           : null,
       bottomNavigationBar: (version == runningVersion)
           ? Container(
@@ -252,9 +290,9 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(color: Colors.green[400]),
                             ),
                             onPressed: () {
+                            camController= MobileScannerController();
                               setState(() {
                                 tenderDirection = 'inward';
-                                //controller?.resumeCamera();
                                 scan = !scan;
                               });
                             },
@@ -273,10 +311,10 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(color: Colors.red[400]),
                             ),
                             onPressed: () {
+                            camController= MobileScannerController();
                               setState(() {
                                 qrCodeResult = 'Ready To Scan...';
                                 tenderDirection = 'outward';
-                                //controller?.resumeCamera();
                                 scan = !scan;
                               });
                             },
@@ -298,7 +336,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            //controller?.stopCamera();
                             scan = !scan;
                           });
                         },
@@ -313,60 +350,65 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         MobileScanner(
-          allowDuplicates: false,
+          allowDuplicates: true,
+          fit: BoxFit.fill,
           controller: camController,
           onDetect: (barcode, args) async {
-            setState(() {
-              qrCodeResult = barcode.rawValue ?? '---';
-            });
-
-            var result = barcode;
-            camController.stop();
-            Tender? t;
-            for (var i = 0; i < cTendersList!.length; i++) {
-              if (cTendersList![i]!.tenderNumber == result.rawValue) {
-                t = cTendersList![i]!;
-              }
-            }
-            //print(t);
-            if (t != null) {
-              await DatabaseService(uid: cUserUid, data: result.rawValue)
-                  .updateTenderData(
-                      result.rawValue,
-                      t.tenderName,
-                      cUserSection,
-                      t.tenderSection,
-                      t.tenderOwnerName,
-                      tenderDirection,
-                      cUserName,
-                      dateFormat.format(DateTime.now()),
-                      'Processing');
-
-              await DatabaseService(uid: cUserUid, data: result.rawValue)
-                  .updateLogFile(
-                      result.rawValue,
-                      t.tenderName,
-                      cUserSection,
-                      t.tenderSection,
-                      t.tenderOwnerName,
-                      tenderDirection,
-                      cUserName,
-                      dateFormat.format(DateTime.now()),
-                      'Processing');
-
-              //await FlutterBeep.beep();
-              Future.delayed(const Duration(milliseconds: 800));
-
-              //controller.resumeCamera();
-              camController.start;
+            if (getNewScan) {
               setState(() {
-                qrCodeResult = 'Ready To Scan...';
+                qrCodeResult = barcode.rawValue ?? '---';
+                getNewScan = false;
               });
-            } else {
-              //FlutterRingtonePlayer.playRingtone();
-              //await FlutterBeep.playSysSound(44);
-              Future.delayed(const Duration(milliseconds: 800));
-              //controller.resumeCamera();
+
+              var result = barcode;
+              //await camController.stop();
+              Tender? t;
+              for (var i = 0; i < cTendersList!.length; i++) {
+                if (cTendersList![i]!.tenderNumber == result.rawValue) {
+                  t = cTendersList![i]!;
+                }
+              }
+              //print(t);
+              if (t != null) {
+                await DatabaseService(uid: cUserUid, data: result.rawValue)
+                    .updateTenderData(
+                        result.rawValue,
+                        t.tenderName,
+                        cUserSection,
+                        t.tenderSection,
+                        t.tenderOwnerName,
+                        tenderDirection,
+                        cUserName,
+                        dateFormat.format(DateTime.now()),
+                        'Processing');
+
+                await DatabaseService(uid: cUserUid, data: result.rawValue)
+                    .updateLogFile(
+                        result.rawValue,
+                        t.tenderName,
+                        cUserSection,
+                        t.tenderSection,
+                        t.tenderOwnerName,
+                        tenderDirection,
+                        cUserName,
+                        dateFormat.format(DateTime.now()),
+                        'Processing');
+
+                await FlutterBeep.beep();
+                Future.delayed(const Duration(milliseconds: 800));
+
+                //controller.resumeCamera();
+                //await camController.start();
+                setState(() {
+                  qrCodeResult = 'Ready To Scan...';
+                  getNewScan = true;
+                });
+              } else {
+                //FlutterRingtonePlayer.playRingtone();
+                await FlutterBeep.playSysSound(44);
+                Future.delayed(const Duration(milliseconds: 800));
+                //controller.resumeCamera();
+              }
             }
           },
         ),

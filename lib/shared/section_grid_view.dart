@@ -39,6 +39,7 @@ class SectionsGridView extends StatelessWidget {
             ),
             itemBuilder: (context, index) => GestureDetector(
               onTap: () async{
+                //print('****************************$index');
                 //print(sections[index]);
                 await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SectionTendersDetails(sectionName: sections[index]!,tenders: tenders,)));},
               child: Container(
