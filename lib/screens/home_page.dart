@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                     height: scan ? screenHeight / 2 : 0,
                     width: scan ? screenWidth : 0,
                     child: scan
-                        ? _buildQrView(context, screenWidth/1.7)
+                        ? _buildQrView(context, screenWidth / 1.7)
                         : const SizedBox(
                             height: 0,
                           ),
@@ -310,72 +310,71 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildQrView(BuildContext context, double scanAreaWidth) {
-
     return Stack(
       children: [
         MobileScanner(
           allowDuplicates: false,
-          onDetect: (barcode, args) async{
+          controller: camController,
+          onDetect: (barcode, args) async {
             setState(() {
               qrCodeResult = barcode.rawValue ?? '---';
             });
 
-var result=  barcode;
- Tender? t;
-      for (var i = 0; i < cTendersList!.length; i++) {
-        if (cTendersList![i]!.tenderNumber == result.rawValue) {
-          t = cTendersList![i]!;
-        }
-      }
-      //print(t);
-      if (t != null) {
-        await DatabaseService(uid: cUserUid, data: result.rawValue)
-            .updateTenderData(
-                result.rawValue,
-                t.tenderName,
-                cUserSection,
-                t.tenderSection,
-                t.tenderOwnerName,
-                tenderDirection,
-                cUserName,
-                dateFormat.format(DateTime.now()),
-                'Processing');
+            var result = barcode;
+            camController.stop();
+            Tender? t;
+            for (var i = 0; i < cTendersList!.length; i++) {
+              if (cTendersList![i]!.tenderNumber == result.rawValue) {
+                t = cTendersList![i]!;
+              }
+            }
+            //print(t);
+            if (t != null) {
+              await DatabaseService(uid: cUserUid, data: result.rawValue)
+                  .updateTenderData(
+                      result.rawValue,
+                      t.tenderName,
+                      cUserSection,
+                      t.tenderSection,
+                      t.tenderOwnerName,
+                      tenderDirection,
+                      cUserName,
+                      dateFormat.format(DateTime.now()),
+                      'Processing');
 
-        await DatabaseService(uid: cUserUid, data: result.rawValue).updateLogFile(
-            result.rawValue,
-            t.tenderName,
-            cUserSection,
-            t.tenderSection,
-            t.tenderOwnerName,
-            tenderDirection,
-            cUserName,
-            dateFormat.format(DateTime.now()),
-            'Processing');
+              await DatabaseService(uid: cUserUid, data: result.rawValue)
+                  .updateLogFile(
+                      result.rawValue,
+                      t.tenderName,
+                      cUserSection,
+                      t.tenderSection,
+                      t.tenderOwnerName,
+                      tenderDirection,
+                      cUserName,
+                      dateFormat.format(DateTime.now()),
+                      'Processing');
 
-        //await FlutterBeep.beep();
-        Future.delayed(const Duration(milliseconds: 800));
-        
-        //controller.resumeCamera();
-        setState(() {
-          qrCodeResult = 'Ready To Scan...';
-        });
-      } else {
-        //FlutterRingtonePlayer.playRingtone();
-        //await FlutterBeep.playSysSound(44);
-        Future.delayed(const Duration(milliseconds: 800));
-        //controller.resumeCamera();
-      }            
+              //await FlutterBeep.beep();
+              Future.delayed(const Duration(milliseconds: 800));
+
+              //controller.resumeCamera();
+              camController.start;
+              setState(() {
+                qrCodeResult = 'Ready To Scan...';
+              });
+            } else {
+              //FlutterRingtonePlayer.playRingtone();
+              //await FlutterBeep.playSysSound(44);
+              Future.delayed(const Duration(milliseconds: 800));
+              //controller.resumeCamera();
+            }
           },
         ),
-
-
         QRScannerOverlay(
           overlayColor: bgColor,
           scanAreaWidth: scanAreaWidth,
           scanAreaHeight: scanAreaWidth,
           borderColor: Colors.blue,
-          
-
         )
       ],
     );
