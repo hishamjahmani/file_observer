@@ -38,20 +38,23 @@ class SectionsGridView extends StatelessWidget {
               //crossAxisCount: 2,
             ),
             itemBuilder: (context, index) => GestureDetector(
-              onTap: () async{
-                //print('****************************$index');
-                //print(sections[index]);
-                await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SectionTendersDetails(sectionName: sections[index]!,tenders: tenders,)));},
+              onTap: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SectionTendersDetails(
+                          sectionName: sections[index]!,
+                          tenders: tenders,
+                        )));
+              },
               child: Container(
                 //margin: EdgeInsets.all(5),
-                // height: 150,
-                // width: 150,
+                 height: 150,
+                 width: 150,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(25)),
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                      image:
-                          AssetImage('assets/images/${sections[index]}.jpg'),),
+                    image: AssetImage('assets/images/${sections[index]}.jpg'),
+                  ),
                   boxShadow: [
                     BoxShadow(
                       offset: Offset.fromDirection(3.14 / 4, 10),
@@ -66,33 +69,33 @@ class SectionsGridView extends StatelessWidget {
                   children: [
                     Container(
                       height: 20,
-                      width: 40,
+                      width: 60,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(7),
                         ),
                         color: tenders
-                                    .where((val) =>
-                                        val.tenderDirection!.contains('outward'))
-                                    .where((val) => val.tenderLocation!
-                                        .contains(sections[index]!)).isNotEmpty
-                            ? Colors.red[400]
+                                .where((val) =>
+                                    val.tenderDirection!.contains('outward'))
+                                .where((val) => val.tenderLocation!
+                                    .contains(sections[index]!))
+                                .isNotEmpty
+                            ? Colors.red[300]
                             : Colors.green[300],
                       ),
                       child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                            '${tenders.where((val) => val.tenderLocation!.contains(sections[index]!)).where((element) => element.tenderDirection!.contains('outward')).length.toString()} / ${tenders.where((val) => val.tenderLocation!.contains(sections[index]!)).length.toString()}'),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        //Text(sections[index].substring(0, 3)),
-                      ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                              '${tenders.where((val) => val.tenderLocation!.contains(sections[index]!)).where((element) => element.tenderDirection!.contains('outward')).length.toString()} / ${tenders.where((val) => val.tenderLocation!.contains(sections[index]!)).length.toString()}'),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          //Text(sections[index].substring(0, 3)),
+                        ],
+                      ),
                     ),
-                    ),
-                    
                   ],
                 ),
                 //onTap: ,
