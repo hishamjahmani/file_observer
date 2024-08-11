@@ -1,3 +1,4 @@
+import 'package:file_observer/shared/toast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:file_observer/services/auth.dart';
@@ -30,13 +31,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String qrCodeResult = "Ready To Scan...";
 
-  String? certainTender, tenderDirection;
+  String? certainTender, tenderDirection, enteredTenderName = '';
 
   final AuthService _authUser = AuthService();
   final dateFormat = DateFormat('dd/MM/yyyy hh:mm:ss a');
 
   bool scan = false;
   bool getNewScan = true;
+  bool isNotfound = false;
   Color bgColor = Colors.white;
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -65,6 +67,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   final TextEditingController searchTextEditingController =
+      TextEditingController();
+  final TextEditingController newTenderTextEditingController =
       TextEditingController();
 
   @override
@@ -190,16 +194,15 @@ class _HomePageState extends State<HomePage> {
                   ))),
       floatingActionButton: (version == runningVersion)
           ? Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-FloatingActionButton(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
                   heroTag: "Dismiss",
                   elevation: 25,
                   backgroundColor: const Color.fromARGB(255, 219, 109, 101),
-                  onPressed: ()  {
+                  onPressed: () {
                     if (qrCodeResult != "Ready To Scan...") {
-                      
                       setState(() {
                         qrCodeResult = "Ready To Scan...";
                         getNewScan = true;
@@ -216,47 +219,133 @@ FloatingActionButton(
                     ),
                   )),
                 ),
-
-                const SizedBox(height: 20,),
-
-
-
-              FloatingActionButton(
-                heroTag: "Create",
+                const SizedBox(
+                  height: 20,
+                ),
+                FloatingActionButton(
+                  heroTag: "Create",
                   elevation: 25,
                   onPressed: () async {
-                    if (qrCodeResult != "Ready To Scan...") {
-                      await DatabaseService(uid: cUserUid, data: qrCodeResult)
-                          .addNewTenderData(
-                        qrCodeResult,
-                        'refrigerator',
-                        cUserSection!,
-                        cUserSection!,
-                        cUserName!,
-                        tenderDirection!,
-                        cUserName!,
-                        dateFormat.format(DateTime.now()),
-                        'Created',
-                      );
-              
-                      await DatabaseService(uid: cUserUid, data: qrCodeResult)
-                          .updateLogFile(
-                        qrCodeResult,
-                        'refrigerator',
-                        cUserSection!,
-                        cUserSection!,
-                        cUserName!,
-                        tenderDirection!,
-                        cUserName!,
-                        dateFormat.format(DateTime.now()),
-                        'Created',
-                      );
+                    if ((qrCodeResult != "Ready To Scan...") && isNotfound) {
+                      await showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) {
+                            return Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(25),
+                                  topLeft: Radius.circular(25),
+                                ),
+                                color: Colors.white70,
+                              ),
+                              height:
+                                  MediaQuery.of(context).size.height * 2 / 3,
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 20.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Tender Name: ',
+                                    style: TextStyle(
+                                      color: Colors.green[800],
+                                      fontSize: 22.0,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 25, height: 10),
+                                  TextFormField(
+                                    controller: newTenderTextEditingController,
+                                    keyboardType: TextInputType.text,
+                                    decoration: textInputDecoration.copyWith(
+                                        suffixIcon: IconButton(
+                                            icon: const Icon(Icons.clear),
+                                            onPressed: () {
+                                              setState(() {
+                                                newTenderTextEditingController
+                                                    .clear();
+                                              });
+                                            }),
+                                        fillColor: Colors.blue[100],
+                                        hintStyle:
+                                            const TextStyle(color: Colors.red),
+                                        hintText: 'Enter Tender Name'),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(height: 20),
+                                      ElevatedButton(
+                                        //Scan Once
+                                        onPressed: () {
+                                          newTenderTextEditingController
+                                                  .text.isNotEmpty
+                                              ? enteredTenderName =
+                                                  newTenderTextEditingController
+                                                      .text
+                                              : enteredTenderName = '';
+                                          newTenderTextEditingController
+                                              .clear();
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          "Ok",
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+
+                      if ((enteredTenderName != null) &&
+                          (enteredTenderName != '')) {
+                        await DatabaseService(uid: cUserUid, data: qrCodeResult)
+                            .addNewTenderData(
+                          qrCodeResult,
+                          enteredTenderName!,
+                          cUserSection!,
+                          cUserSection!,
+                          cUserName!,
+                          tenderDirection!,
+                          cUserName!,
+                          dateFormat.format(DateTime.now()),
+                          'Created',
+                        );
+
+                        await DatabaseService(uid: cUserUid, data: qrCodeResult)
+                            .updateLogFile(
+                          qrCodeResult,
+                          enteredTenderName!,
+                          cUserSection!,
+                          cUserSection!,
+                          cUserName!,
+                          tenderDirection!,
+                          cUserName!,
+                          dateFormat.format(DateTime.now()),
+                          'Created',
+                        );
+                        enteredTenderName = '';
+                        FlutterBeep.beep();
+                      } else {
+                        await toast('Tender is not added');
+                      }
+
                       setState(() {
                         qrCodeResult = "Ready To Scan...";
                         getNewScan = true;
+                        isNotfound = false;
                         //controller.resumeCamera();
                       });
-                      FlutterBeep.beep();
                     }
                   },
                   child: const Center(
@@ -267,8 +356,8 @@ FloatingActionButton(
                     ),
                   )),
                 ),
-            ],
-          )
+              ],
+            )
           : null,
       bottomNavigationBar: (version == runningVersion)
           ? Container(
@@ -290,7 +379,7 @@ FloatingActionButton(
                               style: TextStyle(color: Colors.green[400]),
                             ),
                             onPressed: () {
-                            camController= MobileScannerController();
+                              camController = MobileScannerController();
                               setState(() {
                                 tenderDirection = 'inward';
                                 scan = !scan;
@@ -311,7 +400,7 @@ FloatingActionButton(
                               style: TextStyle(color: Colors.red[400]),
                             ),
                             onPressed: () {
-                            camController= MobileScannerController();
+                              camController = MobileScannerController();
                               setState(() {
                                 qrCodeResult = 'Ready To Scan...';
                                 tenderDirection = 'outward';
@@ -364,12 +453,13 @@ FloatingActionButton(
               //await camController.stop();
               Tender? t;
               for (var i = 0; i < cTendersList!.length; i++) {
+                //to check tender is available or not.
                 if (cTendersList![i]!.tenderNumber == result.rawValue) {
                   t = cTendersList![i]!;
                 }
               }
-              //print(t);
               if (t != null) {
+                //if tender is available.
                 await DatabaseService(uid: cUserUid, data: result.rawValue)
                     .updateTenderData(
                         result.rawValue,
@@ -402,11 +492,18 @@ FloatingActionButton(
                 setState(() {
                   qrCodeResult = 'Ready To Scan...';
                   getNewScan = true;
+                  isNotfound = false;
                 });
               } else {
+                //if tender is not found.
                 //FlutterRingtonePlayer.playRingtone();
                 await FlutterBeep.playSysSound(44);
                 Future.delayed(const Duration(milliseconds: 800));
+                setState(() {
+                  isNotfound = true;
+                  getNewScan = false;
+                });
+
                 //controller.resumeCamera();
               }
             }
