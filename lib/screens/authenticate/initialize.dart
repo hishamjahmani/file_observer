@@ -20,7 +20,7 @@ class Initialize extends StatefulWidget {
 class _InitializeState extends State<Initialize> {
   // Create the initialization Future outside of `build`:
   final Future<FirebaseApp> _initialization = Firebase.initializeApp(
-   /* options: const FirebaseOptions(
+    /*options: const FirebaseOptions(
     apiKey: "AIzaSyCA2Vqjvxcj9YT9IcXTh81LzPuRIHslnZM",
     appId: "1:38258509079:web:136b6ab6be68847a1d6352",
     messagingSenderId: "38258509079",
