@@ -170,34 +170,38 @@ class TenderTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const SizedBox(height: 20),
-                            ElevatedButton(
-                              //Scan Once
-                              onPressed: () async {
-                                await DatabaseService(
-                                        uid: cUser.uid,
-                                        data: tender!.tenderNumber)
-                                    .updateLogFile(
-                                        tender!.tenderNumber,
-                                        tender!.tenderName,
-                                        cUser.userSection,
-                                        tender!.tenderSection,
-                                        tender!.tenderOwnerName,
-                                        'inward',
-                                        cUser.userName,
-                                        dateFormat.format(DateTime.now()),
-                                        'Finished');
-                                await DatabaseService(
-                                        data: tender!.tenderNumber)
-                                    .deleteTenderData(tender!.tenderNumber!);
-                                // ignore: use_build_context_synchronously
-                                Navigator.pop(context);
-                              },
-                              child: const Text(
-                                "Finish",
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold),
+                            //const SizedBox(height: 20),
+                            SizedBox(
+                              height: 35,
+                              width: MediaQuery.of(context).size.width-50,
+                              child: ElevatedButton(
+                                //Scan Once
+                                onPressed: () async {
+                                  await DatabaseService(
+                                          uid: cUser.uid,
+                                          data: tender!.tenderNumber)
+                                      .updateLogFile(
+                                          tender!.tenderNumber,
+                                          tender!.tenderName,
+                                          cUser.userSection,
+                                          tender!.tenderSection,
+                                          tender!.tenderOwnerName,
+                                          'inward',
+                                          cUser.userName,
+                                          dateFormat.format(DateTime.now()),
+                                          'Finished');
+                                  await DatabaseService(
+                                          data: tender!.tenderNumber)
+                                      .deleteTenderData(tender!.tenderNumber!);
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  "Finish",
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ],
