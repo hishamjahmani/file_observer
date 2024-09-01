@@ -66,8 +66,11 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  final TextEditingController searchTextEditingController =
+  final TextEditingController searchTextEditingControllerByNo =
       TextEditingController();
+  final TextEditingController searchTextEditingControllerByName =
+      TextEditingController();
+
   final TextEditingController newTenderTextEditingController =
       TextEditingController();
 
@@ -151,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                     child: TextFormField(
-                      controller: searchTextEditingController,
+                      controller: searchTextEditingControllerByNo,
                       keyboardType: TextInputType.number,
                       decoration: textInputDecoration.copyWith(
                           suffixIcon: certainTender != ''
@@ -159,16 +162,48 @@ class _HomePageState extends State<HomePage> {
                                   icon: const Icon(Icons.clear),
                                   onPressed: () {
                                     setState(() {
-                                      searchTextEditingController.clear();
+                                      searchTextEditingControllerByNo.clear();
                                       certainTender = '';
                                     });
                                   })
                               : null,
                           fillColor: Colors.blue[100],
                           hintStyle: const TextStyle(color: Colors.red),
-                          hintText: 'Search a tender'),
+                          hintText: 'Search a tender by NUMBER'),
                       onChanged: (val) {
-                        setState(() => certainTender = val);
+                        setState(() {
+                          certainTender = val;
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    child: TextFormField(
+                      controller: searchTextEditingControllerByName,
+                      keyboardType: TextInputType.text,
+                      decoration: textInputDecoration.copyWith(
+                          suffixIcon: certainTender != ''
+                              ? IconButton(
+                                  icon: const Icon(Icons.clear),
+                                  onPressed: () {
+                                    setState(() {
+                                      searchTextEditingControllerByName.clear();
+                                      certainTender = '';
+                                    });
+                                  })
+                              : null,
+                          fillColor: Colors.blue[100],
+                          hintStyle: const TextStyle(color: Colors.red),
+                          hintText: 'Search a tender by NAME'),
+                      onChanged: (val) {
+                        setState(() {
+                          certainTender = val;
+                        });
                       },
                     ),
                   ),

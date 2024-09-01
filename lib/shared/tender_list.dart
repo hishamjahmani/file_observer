@@ -26,7 +26,7 @@ class _TenderListState extends State<TenderList> {
     if (tenders != null) {
       if(filter != null) {
         filteredList = tenders
-          .where((element) => element.tenderNumber!.contains(filter))
+          .where((element) => element.tenderNumber!.contains(filter)|| element.tenderName!.toLowerCase().contains(filter.toLowerCase()))
           .toList();
       }
       return ListView.builder(
