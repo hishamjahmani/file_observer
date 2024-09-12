@@ -163,6 +163,7 @@ class _HomePageState extends State<HomePage> {
                                   onPressed: () {
                                     setState(() {
                                       searchTextEditingControllerByNo.clear();
+                                      searchTextEditingControllerByName.clear();
                                       certainTender = '';
                                     });
                                   })
@@ -192,6 +193,7 @@ class _HomePageState extends State<HomePage> {
                                   icon: const Icon(Icons.clear),
                                   onPressed: () {
                                     setState(() {
+                                      searchTextEditingControllerByNo.clear();
                                       searchTextEditingControllerByName.clear();
                                       certainTender = '';
                                     });

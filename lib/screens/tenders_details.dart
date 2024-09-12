@@ -21,7 +21,9 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
     certainTender = '';
   }
 
-  final TextEditingController searchTextEditingController =
+  final TextEditingController searchTextEditingControllerByNo =
+      TextEditingController();
+  final TextEditingController searchTextEditingControllerByName =
       TextEditingController();
 
   @override
@@ -35,7 +37,9 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
           .toList();
     } else {
       tenders = widget.tenders
-          .where((element) => element.tenderNumber!.contains(certainTender!))
+          .where((element) =>
+              element.tenderNumber!.contains(certainTender!) ||
+              element.tenderName!.contains(certainTender!))
           .where((element) => element.tenderSection!.contains(filter))
           .toList();
     }
@@ -49,9 +53,9 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: TextFormField(
-                  controller: searchTextEditingController,
+                  controller: searchTextEditingControllerByNo,
                   keyboardType: TextInputType.number,
                   decoration: textInputDecoration.copyWith(
                       suffixIcon: certainTender != ''
@@ -59,64 +63,105 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
                               icon: const Icon(Icons.clear),
                               onPressed: () {
                                 setState(() {
-                                  searchTextEditingController.clear();
+                                  searchTextEditingControllerByNo.clear();
+                                  searchTextEditingControllerByName.clear();
                                   certainTender = '';
                                 });
                               })
                           : null,
                       fillColor: Colors.blue[100],
                       hintStyle: const TextStyle(color: Colors.red),
-                      hintText: 'Search a tender'),
+                      hintText: 'Search a tender by NUMBER'),
                   onChanged: (val) {
                     setState(() => certainTender = val);
                   },
                 ),
               ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: TextFormField(
+                  controller: searchTextEditingControllerByName,
+                  keyboardType: TextInputType.text,
+                  decoration: textInputDecoration.copyWith(
+                      suffixIcon: certainTender != ''
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                setState(() {
+                                  searchTextEditingControllerByNo.clear();
+                                  searchTextEditingControllerByName.clear();
+                                  certainTender = '';
+                                });
+                              })
+                          : null,
+                      fillColor: Colors.blue[100],
+                      hintStyle: const TextStyle(color: Colors.red),
+                      hintText: 'Search a tender by NAME'),
+                  onChanged: (val) {
+                    setState(() {
+                      certainTender = val;
+                    });
+                  },
+                ),
+              ),
               const SizedBox(height: 10.0),
               DataTable(
-                //columnSpacing: 25,
+                dataRowMinHeight: 10,
+                dataRowMaxHeight: 80,
+                columnSpacing: 15,
                 columns: const <DataColumn>[
                   DataColumn(
-                    label: Flexible(
-                      flex: 1,
-                      child: Text(
-                        'Tender No.',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+                    label: Text(
+                      'Tender No.',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                   DataColumn(
-                    label: Flexible(
-                      flex: 1,
-                      child: Text(
-                        'Location',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+                    label: Text(
+                      'Tender Name',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                   DataColumn(
-                    label: Flexible(
-                      flex: 1,
-                      child: Text(
-                        'Time',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+                    label: Text(
+                      'Location',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                 ],
                 rows: List<DataRow>.generate(
                     tenders.length,
                     (index) => DataRow(cells: <DataCell>[
-                          DataCell(Text('${tenders[index].tenderNumber}')),
-                          DataCell(Text('${tenders[index].tenderLocation}')),
-                          DataCell(Text(
-                            '${tenders[index].currentTime}',
-                            style: TextStyle(
-                                color:
-                                    tenders[index].tenderDirection == 'outward'
+                          DataCell(SizedBox(
+                              width: MediaQuery.of(context).size.width / 4.5,
+                              //height: 40.0,
+                              child: Text(
+                                '${tenders[index].tenderNumber}',
+                                maxLines: 4,
+                                //overflow: TextOverflow.ellipsis,
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.justify,
+                              ))),
+                          DataCell(SizedBox(
+                            width: MediaQuery.of(context).size.width / 4.5,
+                            child: Text(
+                              '${tenders[index].tenderName}',
+                            ),
+                          )),
+                          DataCell(
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 4.5,
+                              child: Text(
+                                '${tenders[index].tenderLocation}',
+                                style: TextStyle(
+                                    color: tenders[index].tenderDirection ==
+                                            'outward'
                                         ? Colors.red[800]
                                         : Colors.green[800]),
-                          )),
+                              ),
+                            ),
+                          ),
                         ])),
               ),
             ],
