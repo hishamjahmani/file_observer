@@ -106,63 +106,68 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
                 ),
               ),
               const SizedBox(height: 10.0),
-              DataTable(
-                dataRowMinHeight: 10,
-                dataRowMaxHeight: 80,
-                columnSpacing: 15,
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'Tender No.',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Tender Name',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Location',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ],
-                rows: List<DataRow>.generate(
-                    tenders.length,
-                    (index) => DataRow(cells: <DataCell>[
-                          DataCell(SizedBox(
-                              width: MediaQuery.of(context).size.width / 4.5,
-                              //height: 40.0,
-                              child: Text(
-                                '${tenders[index].tenderNumber}',
-                                maxLines: 4,
-                                //overflow: TextOverflow.ellipsis,
-                                textDirection: TextDirection.ltr,
-                                textAlign: TextAlign.justify,
-                              ))),
-                          DataCell(SizedBox(
-                            width: MediaQuery.of(context).size.width / 4.5,
-                            child: Text(
-                              '${tenders[index].tenderName}',
-                            ),
-                          )),
-                          DataCell(
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 4.5,
-                              child: Text(
-                                '${tenders[index].tenderLocation}',
-                                style: TextStyle(
-                                    color: tenders[index].tenderDirection ==
-                                            'outward'
-                                        ? Colors.red[800]
-                                        : Colors.green[800]),
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0,0,0,20.0),
+                  child: DataTable(
+                    dataRowMinHeight: 10,
+                    dataRowMaxHeight: 90,
+                    columnSpacing: 15,
+                    columns: const <DataColumn>[
+                      DataColumn(
+                        label: Text(
+                          'Tender No.',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Tender Name',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Location',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ],
+                    rows: List<DataRow>.generate(
+                        tenders.length,
+                        (index) => DataRow(cells: <DataCell>[
+                              DataCell(SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4.5,
+                                  //height: 40.0,
+                                  child: Text(
+                                    '${tenders[index].tenderNumber}',
+                                    maxLines: 4,
+                                    //overflow: TextOverflow.ellipsis,
+                                    textDirection: TextDirection.ltr,
+                                    textAlign: TextAlign.justify,
+                                  ))),
+                              DataCell(SizedBox(
+                                width: MediaQuery.of(context).size.width / 4.5,
+                                child: Text(
+                                  '${tenders[index].tenderName}',
+                                ),
+                              )),
+                              DataCell(
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4.5,
+                                  child: Text(
+                                    '${tenders[index].tenderLocation}',
+                                    style: TextStyle(
+                                        color: tenders[index].tenderDirection ==
+                                                'outward'
+                                            ? Colors.red[800]
+                                            : Colors.green[800]),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ])),
+                            ])),
+                  ),
+                ),
               ),
             ],
           ),

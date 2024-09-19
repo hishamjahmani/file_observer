@@ -24,10 +24,14 @@ class _TenderListState extends State<TenderList> {
     // tenders.forEach((tender) {
     // });
     if (tenders != null) {
-      if(filter != null) {
+      if (filter != null) {
         filteredList = tenders
-          .where((element) => element.tenderNumber!.contains(filter)|| element.tenderName!.toLowerCase().contains(filter.toLowerCase()))
-          .toList();
+            .where((element) =>
+                element.tenderNumber!.contains(filter) ||
+                element.tenderName!
+                    .toLowerCase()
+                    .contains(filter.toLowerCase()))
+            .toList();
       }
       return ListView.builder(
         itemCount: filteredList!.length,

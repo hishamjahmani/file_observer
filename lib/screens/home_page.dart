@@ -348,29 +348,29 @@ class _HomePageState extends State<HomePage> {
                           (enteredTenderName != '')) {
                         await DatabaseService(uid: cUserUid, data: qrCodeResult)
                             .addNewTenderData(
-                          qrCodeResult,
-                          enteredTenderName!,
-                          cUserSection!,
-                          cUserSection!,
-                          cUserName!,
-                          tenderDirection!,
-                          cUserName!,
-                          dateFormat.format(DateTime.now()),
-                          'Created',
-                        );
+                                qrCodeResult,
+                                enteredTenderName!,
+                                cUserSection!,
+                                cUserSection!,
+                                cUserName!,
+                                tenderDirection!,
+                                cUserName!,
+                                dateFormat.format(DateTime.now()),
+                                'Created',
+                                cUserName!);
 
                         await DatabaseService(uid: cUserUid, data: qrCodeResult)
                             .updateLogFile(
-                          qrCodeResult,
-                          enteredTenderName!,
-                          cUserSection!,
-                          cUserSection!,
-                          cUserName!,
-                          tenderDirection!,
-                          cUserName!,
-                          dateFormat.format(DateTime.now()),
-                          'Created',
-                        );
+                                qrCodeResult,
+                                enteredTenderName!,
+                                cUserSection!,
+                                cUserSection!,
+                                cUserName!,
+                                tenderDirection!,
+                                cUserName!,
+                                dateFormat.format(DateTime.now()),
+                                'Created',
+                                cUserName!);
                         enteredTenderName = '';
                         FlutterBeep.beep();
                       } else {
@@ -507,7 +507,8 @@ class _HomePageState extends State<HomePage> {
                         tenderDirection,
                         cUserName,
                         dateFormat.format(DateTime.now()),
-                        'Processing');
+                        'Processing',
+                        cUserName);
 
                 await DatabaseService(uid: cUserUid, data: result.rawValue)
                     .updateLogFile(
@@ -519,7 +520,8 @@ class _HomePageState extends State<HomePage> {
                         tenderDirection,
                         cUserName,
                         dateFormat.format(DateTime.now()),
-                        'Processing');
+                        'Processing',
+                        cUserName);
 
                 await FlutterBeep.beep();
                 Future.delayed(const Duration(milliseconds: 800));

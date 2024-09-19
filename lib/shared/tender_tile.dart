@@ -33,7 +33,7 @@ class TenderTile extends StatelessWidget {
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           subtitle:
-              Text('${tender!.tenderName} at    ${tender!.tenderLocation}'),
+              Text('${tender!.tenderName} at    ${tender!.tenderLocation}/ ${(tender!.lastActionBy)!=null? tender!.lastActionBy:'  --'}'),
           onTap: () {
             showModalBottomSheet(
                 backgroundColor: Colors.transparent,
@@ -189,7 +189,8 @@ class TenderTile extends StatelessWidget {
                                           'inward',
                                           cUser.userName,
                                           dateFormat.format(DateTime.now()),
-                                          'Finished');
+                                          'Finished',
+                                          cUser.userName);
                                   await DatabaseService(
                                           data: tender!.tenderNumber)
                                       .deleteTenderData(tender!.tenderNumber!);

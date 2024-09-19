@@ -37,7 +37,8 @@ class DatabaseService {
       String? tenderDirection,
       String? currentEmployee,
       String? currentTime,
-      String? actionOnTender) async {
+      String? actionOnTender,
+      String? lastActionBy) async {
     // ignore: deprecated_member_use
     return await tendersCollection.doc(data).set({
       'tenderNumber': tenderNumber,
@@ -49,6 +50,7 @@ class DatabaseService {
       'tenderDirection': tenderDirection,
       'currentTime': currentTime,
       'actionOnTender': actionOnTender,
+      'lastActionBy': lastActionBy,
     });
   }
 
@@ -61,7 +63,8 @@ class DatabaseService {
       String tenderDirection,
       String currentEmployee,
       String currentTime,
-      String actionOnTender) async {
+      String actionOnTender,
+      String lastActionBy) async {
     // ignore: deprecated_member_use
     return await tendersCollection.doc(data).set({
       'tenderNumber': tenderNumber,
@@ -73,6 +76,7 @@ class DatabaseService {
       'tenderDirection': tenderDirection,
       'currentTime': currentTime,
       'actionOnTender': actionOnTender,
+      'lastActionBy': lastActionBy,
     });
   }
 
@@ -90,7 +94,8 @@ class DatabaseService {
       String? tenderDirection,
       String? currentEmployee,
       String? currentTime,
-      String? actionOnTender) async {
+      String? actionOnTender,
+      String? lastActionBy) async {
     // ignore: deprecated_member_use
     return await logCollection
         // ignore: deprecated_member_use
@@ -109,6 +114,7 @@ class DatabaseService {
       'tenderDirection': tenderDirection,
       'currentTime': currentTime,
       'actionOnTender': actionOnTender,
+      'lastActionBy': lastActionBy,
     });
   }
 
@@ -117,16 +123,22 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       //print(doc.data);
       return Tender(
-          tenderNumber: (doc.data()! as Map)['tenderNumber'] ?? 'should be specified',
-          tenderName: (doc.data()! as Map)['tenderName'] ?? 'should be specified',
-          tenderOwnerName:(doc.data()! as Map)['tenderOwnerName'] ?? 'should be specified',
+          tenderNumber:
+              (doc.data()! as Map)['tenderNumber'] ?? 'should be specified',
+          tenderName:
+              (doc.data()! as Map)['tenderName'] ?? 'should be specified',
+          tenderOwnerName:
+              (doc.data()! as Map)['tenderOwnerName'] ?? 'should be specified',
           currentEmployee:
               (doc.data()! as Map)['currentEmployee'] ?? 'should be specified',
-          tenderSection: (doc.data()! as Map)['tenderSection'] ?? 'should be specified',
-          currentTime: (doc.data()! as Map)['currentTime'] ?? 'should be specified',
+          tenderSection:
+              (doc.data()! as Map)['tenderSection'] ?? 'should be specified',
+          currentTime:
+              (doc.data()! as Map)['currentTime'] ?? 'should be specified',
           tenderDirection: (doc.data()! as Map)['tenderDirection'] ?? 'inward',
           tenderLocation:
-              (doc.data()! as Map)['tenderLocation'] ?? 'should be specified');
+              (doc.data()! as Map)['tenderLocation'] ?? 'should be specified',
+              lastActionBy: (doc.data()!as Map)['lastActionBy']?? ' --');
     }).toList();
   }
 
@@ -152,7 +164,9 @@ class DatabaseService {
   }
 
   Stream<String> get currentAppVersion {
-    
-    return appVersion.doc('version').snapshots().map((event) => (event.data() as Map)['version']);
+    return appVersion
+        .doc('version')
+        .snapshots()
+        .map((event) => (event.data() as Map)['version']);
   }
 }

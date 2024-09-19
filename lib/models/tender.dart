@@ -8,7 +8,17 @@ class Tender {
   final String? tenderDirection;
   final String? tenderLocation;
   final String? actionOnTender;
+  final String? lastActionBy;
 
-
-  Tender({this.tenderNumber, this.tenderName, this.tenderOwnerName, this.currentTime, this.currentEmployee, this.tenderSection, this.tenderDirection, this.tenderLocation, this.actionOnTender});
+  Tender(
+      {this.tenderNumber,
+      this.tenderName,
+      this.tenderOwnerName,
+      this.currentTime,
+      this.currentEmployee,
+      this.tenderSection,
+      this.tenderDirection,
+      this.tenderLocation,
+      this.actionOnTender,
+      this.lastActionBy});
 }
