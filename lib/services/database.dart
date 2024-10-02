@@ -99,11 +99,7 @@ class DatabaseService {
     // ignore: deprecated_member_use
     return await logCollection
         // ignore: deprecated_member_use
-        .doc(data)
-        .collection(currentTime!.replaceAll('/', ''))
-        // ignore: deprecated_member_use
-        .doc(actionOnTender)
-        // ignore: deprecated_member_use
+        .doc('$data + ${currentTime!.replaceAll('/', '')}')
         .set({
       'tenderNumber': tenderNumber,
       'tenderName': tenderName,
@@ -119,10 +115,10 @@ class DatabaseService {
   }
 
   // tender list from snapshot
-  List<Tender> _tenderListFromSnapshot(QuerySnapshot snapshot) {
+  List<Tender> _tenderListFromSnapshot(QuerySnapshot snapshot) {  //tenders numbers List
     return snapshot.docs.map((doc) {
       //print(doc.data);
-      return Tender(
+      return Tender(   // tender details.
           tenderNumber:
               (doc.data()! as Map)['tenderNumber'] ?? 'should be specified',
           tenderName:
@@ -142,6 +138,36 @@ class DatabaseService {
     }).toList();
   }
 
+
+  List<TenderLog> _tenderLogListFromSnapshot(QuerySnapshot snapshot) { //tender numbers list
+  return snapshot.docs.map((tmDoc){
+    //final subCol = logCollection.doc(tmDoc.id).collection('x').doc('s').get();
+    return  TenderLog(   // tender details.
+          tenderNumber:
+              (tmDoc.data()! as Map)['tenderNumber'] ?? 'should be specified',
+          tenderName:
+              (tmDoc.data()! as Map)['tenderName'] ?? 'should be specified',
+          tenderOwnerName:
+              (tmDoc.data()! as Map)['tenderOwnerName'] ?? 'should be specified',
+          currentEmployee:
+              (tmDoc.data()! as Map)['currentEmployee'] ?? 'should be specified',
+          tenderSection:
+              (tmDoc.data()! as Map)['tenderSection'] ?? 'should be specified',
+          currentTime:
+              (tmDoc.data()! as Map)['currentTime'] ?? 'should be specified',
+          tenderDirection: (tmDoc.data()! as Map)['tenderDirection'] ?? 'inward',
+          tenderLocation:
+              (tmDoc.data()! as Map)['tenderLocation'] ?? 'should be specified',
+              lastActionBy: (tmDoc.data()!as Map)['lastActionBy']?? ' --');
+    }).toList();
+  
+  
+  // for(String t in tm){print(t);};
+  
+    //  snapshot.docs.map((tenderNo){
+    //   tenderNo.data((){});
+     }
+
   //
   // user data from snapshots
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
@@ -155,6 +181,9 @@ class DatabaseService {
 
   Stream<List<Tender>> get tenders {
     return tendersCollection.snapshots().map(_tenderListFromSnapshot);
+  }
+  Stream<List<TenderLog>> get tendersLog {
+    return logCollection.snapshots().map(_tenderLogListFromSnapshot);
   }
 
   //

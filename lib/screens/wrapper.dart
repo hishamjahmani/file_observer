@@ -33,8 +33,12 @@ class Wrapper extends StatelessWidget {
             create: (_) => DatabaseService().currentAppVersion,
             initialData: '',
           ),
+          StreamProvider<List<TenderLog>?>(
+            create:(_)=> DatabaseService().tendersLog,
+            initialData: const [],
+          ),
         ],
-        child:const HomePage(),
+        child: const HomePage(),
       );
       // return StreamProvider<UserData>.value(
       //   value: DatabaseService(uid: currentUser.uid).userData,
