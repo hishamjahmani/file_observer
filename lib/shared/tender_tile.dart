@@ -1,4 +1,5 @@
 import 'package:file_observer/models/tender.dart';
+import 'package:file_observer/screens/log_page.dart';
 import 'package:flutter/material.dart';
 import 'package:file_observer/models/user.dart';
 import 'package:file_observer/services/database.dart';
@@ -32,79 +33,87 @@ class TenderTile extends StatelessWidget {
             tender!.tenderNumber!,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          subtitle:
-              Text('${tender!.tenderName} at    ${tender!.tenderLocation}/ ${(tender!.lastActionBy)!=null? tender!.lastActionBy:'  --'}'),
-          onTap: () {
-            showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.amber[100],
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25)),
-                    ),
-                    height: 300,
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Tender Info: ',
-                          style: TextStyle(
-                            color: Colors.green[800],
-                            fontSize: 22.0,
-                          ),
-                        ),
-                        const SizedBox(width: 25, height: 10),
-                        Text(
-                          'Tender No.:   ${tender!.tenderNumber}',
-                          style: TextStyle(
-                            color: Colors.blue[800],
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        const SizedBox(width: 25, height: 10),
-                        Text(
-                          'Location:   ${tender!.tenderLocation}',
-                          style: TextStyle(
-                            color: Colors.blue[800],
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        const SizedBox(width: 25, height: 10),
-                        Text(
-                          'Direction:   ${tender!.tenderDirection}',
-                          style: TextStyle(
-                            color: Colors.blue[800],
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        const SizedBox(width: 25, height: 10),
-                        Text(
-                          'Action Time:   ${tender!.currentTime}',
-                          style: TextStyle(
-                            color: Colors.blue[800],
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        const SizedBox(width: 25, height: 10),
-                        Text(
-                          'Tender of:   ${tender!.tenderOwnerName}',
-                          style: TextStyle(
-                            color: Colors.blue[800],
-                            fontSize: 18.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
+          subtitle: Text(
+              '${tender!.tenderName} at    ${tender!.tenderLocation}/ ${(tender!.lastActionBy) != null ? tender!.lastActionBy : '  --'}'),
+          onTap: () async{
+            Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => LogPage(
+                          tenderNumber: tender!.tenderNumber!,
+
+                        ))); 
+
+
+      
+            // showModalBottomSheet(
+            //     backgroundColor: Colors.transparent,
+            //     context: context,
+            //     builder: (context) {
+            //       return Container(
+            //         decoration: BoxDecoration(
+            //           color: Colors.amber[100],
+            //           borderRadius: const BorderRadius.only(
+            //               topLeft: Radius.circular(25),
+            //               topRight: Radius.circular(25)),
+            //         ),
+            //         height: 300,
+            //         width: MediaQuery.of(context).size.width,
+            //         padding: const EdgeInsets.symmetric(
+            //             vertical: 15.0, horizontal: 20.0),
+            //         child: Column(
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text(
+            //               'Tender Info: ',
+            //               style: TextStyle(
+            //                 color: Colors.green[800],
+            //                 fontSize: 22.0,
+            //               ),
+            //             ),
+            //             const SizedBox(width: 25, height: 10),
+            //             Text(
+            //               'Tender No.:   ${tender!.tenderNumber}',
+            //               style: TextStyle(
+            //                 color: Colors.blue[800],
+            //                 fontSize: 18.0,
+            //               ),
+            //             ),
+            //             const SizedBox(width: 25, height: 10),
+            //             Text(
+            //               'Location:   ${tender!.tenderLocation}',
+            //               style: TextStyle(
+            //                 color: Colors.blue[800],
+            //                 fontSize: 18.0,
+            //               ),
+            //             ),
+            //             const SizedBox(width: 25, height: 10),
+            //             Text(
+            //               'Direction:   ${tender!.tenderDirection}',
+            //               style: TextStyle(
+            //                 color: Colors.blue[800],
+            //                 fontSize: 18.0,
+            //               ),
+            //             ),
+            //             const SizedBox(width: 25, height: 10),
+            //             Text(
+            //               'Action Time:   ${tender!.currentTime}',
+            //               style: TextStyle(
+            //                 color: Colors.blue[800],
+            //                 fontSize: 18.0,
+            //               ),
+            //             ),
+            //             const SizedBox(width: 25, height: 10),
+            //             Text(
+            //               'Tender of:   ${tender!.tenderOwnerName}',
+            //               style: TextStyle(
+            //                 color: Colors.blue[800],
+            //                 fontSize: 18.0,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       );
+            //     });
           },
           onLongPress: () {
             showModalBottomSheet(
@@ -173,7 +182,7 @@ class TenderTile extends StatelessWidget {
                             //const SizedBox(height: 20),
                             SizedBox(
                               height: 35,
-                              width: MediaQuery.of(context).size.width-50,
+                              width: MediaQuery.of(context).size.width - 50,
                               child: ElevatedButton(
                                 //Scan Once
                                 onPressed: () async {

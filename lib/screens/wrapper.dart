@@ -12,6 +12,7 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //return either Home or Authenticate widget
+    
 
     final currentUser = Provider.of<AppUser>(context);
 
@@ -38,7 +39,8 @@ class Wrapper extends StatelessWidget {
             initialData: const [],
           ),
         ],
-        child: const HomePage(),
+        child: const MaterialApp(home:  HomePage(),
+        debugShowCheckedModeBanner: false,),
       );
       // return StreamProvider<UserData>.value(
       //   value: DatabaseService(uid: currentUser.uid).userData,

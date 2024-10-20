@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
     UserData currentUserInfo = Provider.of<UserData>(context);
     List<Tender> currentTendersList = Provider.of<List<Tender>>(context);
     String version = Provider.of<String>(context);
-    List<TenderLog> tLog = Provider.of<List<TenderLog>>(context);
+
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
