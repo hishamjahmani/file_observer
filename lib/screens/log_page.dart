@@ -22,6 +22,7 @@ class _LogPageState extends State<LogPage> {
   Widget build(BuildContext context) {
     String filter = widget.tenderNumber;
     List<TenderLog> tenderLog = Provider.of<List<TenderLog>>(context);
+    
 
     tenderLog = tenderLog
         .where((element) => element.tenderNumber!.contains(filter))
@@ -32,7 +33,19 @@ class _LogPageState extends State<LogPage> {
           title: Text('Actions on Tender $filter'),
         ),
         body: SingleChildScrollView(
-          child: Column(
+          child:tenderLog.isEmpty? SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(child: CircularProgressIndicator()),
+                SizedBox(height: 20,),
+                Text('No Data, Press Back Button', style: TextStyle(fontWeight:FontWeight.bold, fontSize: 18.0, color: Colors.red),)
+              ],
+            ),
+          ) :Column(
             children: [
               Text('${tenderLog[0].tenderName}', style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 25, fontWeight: FontWeight.bold),),
               const SizedBox(height: 10.0),
