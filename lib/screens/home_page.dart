@@ -81,6 +81,7 @@ class _HomePageState extends State<HomePage> {
     List<Tender> currentTendersList = Provider.of<List<Tender>>(context);
     String version = Provider.of<String>(context);
 
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -150,6 +151,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 10,
                   ),
+                 // ElevatedButton(onPressed: ()=> print('${tLog[0].currentTime} \n ${tLog[0].tenderNumber}'), child: const Text('get')),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -524,7 +526,7 @@ class _HomePageState extends State<HomePage> {
                         cUserName);
 
                 await FlutterBeep.beep();
-                Future.delayed(const Duration(milliseconds: 800));
+                await Future.delayed(const Duration(milliseconds: 800));
 
                 //controller.resumeCamera();
                 //await camController.start();
@@ -537,7 +539,7 @@ class _HomePageState extends State<HomePage> {
                 //if tender is not found.
                 //FlutterRingtonePlayer.playRingtone();
                 await FlutterBeep.playSysSound(44);
-                Future.delayed(const Duration(milliseconds: 800));
+                await Future.delayed(const Duration(milliseconds: 800));
                 setState(() {
                   isNotfound = true;
                   getNewScan = false;
