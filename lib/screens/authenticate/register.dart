@@ -120,7 +120,7 @@ class _RegisterState extends State<Register> {
                       .toList(),
                   onChanged: (val) {
                     setState(() {
-                      userSection != val;
+                      userSection = val!;
                       registerFocusNode!.requestFocus();
                     });
                     //print(val);
