@@ -1,4 +1,4 @@
-import 'package:file_observer/screens/log_page.dart';
+import 'package:file_observer/screens/tenders_log_details.dart';
 import 'package:flutter/material.dart';
 import 'package:file_observer/models/tender.dart';
 import 'package:file_observer/screens/tenders_details.dart';
@@ -13,6 +13,7 @@ class SectionsGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Tender> tenders = Provider.of<List<Tender>>(context);
+    List<TenderLog> tendersLog = Provider.of<List<TenderLog>>(context);
 
     List<String?> sections = [];
 
@@ -47,11 +48,15 @@ class SectionsGridView extends StatelessWidget {
                         )));
               },
               onLongPress: () async {
-                final logFilter = sections[index]!.substring(0, 3).toLowerCase();
-                print(logFilter);
+                final logFilter= sections[index]!.substring(0, 2).toLowerCase();
+                final List<TenderLog> sectionTendersLog = tendersLog
+                    .where((element) => element.tenderNumber!.contains(logFilter)).toList();
+
+                //print(logFilter);
                 await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => LogPage(
-                          tenderNumber: logFilter,
+                    builder: (context) => SectionTendersLogDetails(
+                          sectionName: sections[index]!,
+                          tenders: sectionTendersLog,
                         )));
               },
               child: Container(

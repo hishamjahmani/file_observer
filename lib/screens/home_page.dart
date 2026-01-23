@@ -1,3 +1,4 @@
+import 'package:file_observer/screens/tenders_log_details.dart';
 import 'package:file_observer/shared/toast.dart';
 import 'package:flutter/material.dart';
 
@@ -79,8 +80,9 @@ class _HomePageState extends State<HomePage> {
     AppUser currentUser = Provider.of<AppUser>(context);
     UserData currentUserInfo = Provider.of<UserData>(context);
     List<Tender> currentTendersList = Provider.of<List<Tender>>(context);
-    String version = Provider.of<String>(context);
+    List<TenderLog> tendersLog = Provider.of<List<TenderLog>>(context);
 
+    String version = Provider.of<String>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -151,7 +153,35 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 10,
                   ),
-                 // ElevatedButton(onPressed: ()=> print('${tLog[0].currentTime} \n ${tLog[0].tenderNumber}'), child: const Text('get')),
+
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: screenWidth/1.5 ,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final List<TenderLog> sectionTendersLog =
+                              tendersLog.toList();
+                    
+                          await Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SectionTendersLogDetails(
+                                    sectionName: 'all',
+                                    tenders: sectionTendersLog,
+                                  )));
+                        },
+                        child: const Text(
+                          "Tenders Log (All Sections)",
+                          style: TextStyle(
+                              color: Colors.blue, fontWeight: FontWeight.bold),
+                          softWrap: true,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(
+                      height:
+                          10.0), // ElevatedButton(onPressed: ()=> print('${tLog[0].currentTime} \n ${tLog[0].tenderNumber}'), child: const Text('get')),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -211,6 +241,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
+
                   const SizedBox(height: 10.0),
                   SizedBox(
                     height: screenHeight - 470,
