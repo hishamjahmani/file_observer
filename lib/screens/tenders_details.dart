@@ -51,6 +51,7 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              /*
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -76,7 +77,8 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
                     setState(() => certainTender = val);
                   },
                 ),
-              ),
+              ),*/
+
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -97,7 +99,7 @@ class _SectionTendersDetailsState extends State<SectionTendersDetails> {
                           : null,
                       fillColor: Colors.blue[100],
                       hintStyle: const TextStyle(color: Colors.red),
-                      hintText: 'Search a tender by NAME'),
+                      hintText: 'Search a tender by NAME/Number'),
                   onChanged: (val) {
                     setState(() {
                       certainTender = val;

@@ -60,7 +60,7 @@ class _SectionTendersLogDetailsState extends State<SectionTendersLogDetails> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
+           /*   Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: TextFormField(
@@ -86,6 +86,7 @@ class _SectionTendersLogDetailsState extends State<SectionTendersLogDetails> {
                   },
                 ),
               ),
+              */
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -106,7 +107,7 @@ class _SectionTendersLogDetailsState extends State<SectionTendersLogDetails> {
                           : null,
                       fillColor: Colors.blue[100],
                       hintStyle: const TextStyle(color: Colors.red),
-                      hintText: 'Search a tender by NAME'),
+                      hintText: 'Search a tender by NAME/Number'),
                   onChanged: (val) {
                     setState(() {
                       certainTender = val;

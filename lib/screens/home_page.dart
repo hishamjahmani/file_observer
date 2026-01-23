@@ -157,12 +157,12 @@ class _HomePageState extends State<HomePage> {
                   Align(
                     alignment: Alignment.center,
                     child: SizedBox(
-                      width: screenWidth/1.5 ,
+                      width: screenWidth / 1.5,
                       child: ElevatedButton(
                         onPressed: () async {
                           final List<TenderLog> sectionTendersLog =
                               tendersLog.toList();
-                    
+
                           await Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => SectionTendersLogDetails(
                                     sectionName: 'all',
@@ -180,8 +180,8 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   const SizedBox(
-                      height:
-                          10.0), // ElevatedButton(onPressed: ()=> print('${tLog[0].currentTime} \n ${tLog[0].tenderNumber}'), child: const Text('get')),
+                    height: 10.0,
+                  ), // ElevatedButton(onPressed: ()=> print('${tLog[0].currentTime} \n ${tLog[0].tenderNumber}'), child: const Text('get')),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
