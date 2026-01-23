@@ -1,3 +1,4 @@
+import 'package:file_observer/screens/log_page.dart';
 import 'package:flutter/material.dart';
 import 'package:file_observer/models/tender.dart';
 import 'package:file_observer/screens/tenders_details.dart';
@@ -14,7 +15,7 @@ class SectionsGridView extends StatelessWidget {
     List<Tender> tenders = Provider.of<List<Tender>>(context);
 
     List<String?> sections = [];
-    // ignore: unnecessary_null_comparison
+
     if (tenders != null) {
       for (var i = 0; i < tenders.length; i++) {
         sections.add(tenders[i].tenderLocation);
@@ -45,10 +46,18 @@ class SectionsGridView extends StatelessWidget {
                           tenders: tenders,
                         )));
               },
+              onLongPress: () async {
+                final logFilter = sections[index]!.substring(0, 3).toLowerCase();
+                print(logFilter);
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => LogPage(
+                          tenderNumber: logFilter,
+                        )));
+              },
               child: Container(
                 //margin: EdgeInsets.all(5),
-                 height: 150,
-                 width: 150,
+                height: 150,
+                width: 150,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(25)),
                   image: DecorationImage(
