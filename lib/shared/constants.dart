@@ -17,4 +17,4 @@ var sendButtonColor = Colors.red.shade100;
 var receiveButtonColor = Colors.green.shade100;
 
 List<String> sectionsList = <String> ['Mechanical', 'Electronics', 'Medicine', 'Equipment', 'Stationary', 'CTC',
-'Auditing', 'Bureau', 'GM', 'Accounting', 'Conrrespondent'];
+'Bureau', 'GM', 'Monitoring', 'Conrrespondent', 'HR', 'Admin', 'IT', 'Legal', 'Finance','TA','MA' 'Inventory'];

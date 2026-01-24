@@ -4,6 +4,7 @@ import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(const ToastificationWrapper(
     child: MaterialApp(
       home: MyApp(),

@@ -48,7 +48,7 @@ class SectionsGridView extends StatelessWidget {
                         )));
               },
               onLongPress: () async {
-                final logFilter= sections[index]!.substring(0, 2).toLowerCase();
+                final logFilter= sections[index]!.substring(0, 2).toUpperCase();
                 final List<TenderLog> sectionTendersLog = tendersLog
                     .where((element) => element.tenderNumber!.contains(logFilter)).toList();
 

@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 10.0,
                   ), // ElevatedButton(onPressed: ()=> print('${tLog[0].currentTime} \n ${tLog[0].tenderNumber}'), child: const Text('get')),
-                  Padding(
+                 /* Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                     child: TextFormField(
@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(
                     height: 10,
-                  ),
+                  ),*/
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
